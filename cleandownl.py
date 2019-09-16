@@ -1,11 +1,12 @@
-from watchdog.observers import Observer
-import time
-from watchdog.events import FileSystemEventHandler
 import os
+import time
 import json
 import shutil
 from datetime import datetime
 from time import gmtime, strftime
+
+from watchdog.observers import Observer
+from watchdog.events import FileSystemEventHandler
 
 
 class MyHandler(FileSystemEventHandler):
@@ -13,7 +14,6 @@ class MyHandler(FileSystemEventHandler):
         for filename in os.listdir(folder_to_track):
             i = 1
             if filename != 'kalle':
-                # try:
                 new_name = filename
                 extension = 'noname'
                 try:

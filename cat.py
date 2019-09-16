@@ -6,9 +6,9 @@ from watchdog.observers import Observer
 from watchdog.events import FileSystemEventHandler
 
 groups = ['Programs', 'Documents', 'Images',
-          'Videos', 'Compressed', 'Files', 'Audio']
+          'Videos', 'Compressed', 'Text', 'Other', 'Programming', 'Media']
 
-folder_to_track = '/mnt/c/Users/KOMFUEKU METH. PRY/Downloads'
+folder_to_track = 'mnt/c/Users/KOMFUEKU METH. PRY/Projects/demos/cat-test'
 
 
 def categorize(directory):
