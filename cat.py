@@ -1,52 +1,36 @@
 import os
 import time
-import logging
+import json
+import shutil
+from datetime import datetime
+from time import gmtime, strftime
 
 from watchdog.observers import Observer
 from watchdog.events import FileSystemEventHandler
 
-groups = ['Programs', 'Documents', 'Images',
-          'Videos', 'Compressed', 'Text', 'Other', 'Programming', 'Media']
-
-folder_to_track = 'mnt/c/Users/KOMFUEKU METH. PRY/Projects/demos/cat-test'
+import file_extensions
 
 
-def categorize(directory):
-    # Create a group
-    for group in groups:
-        try:
-            os.mkdir(directory + "/" + group)
-        except FileExistsError:
-            print(f'{group} already exist')
-
-    # Categorizing
-    for file in os.listdir(directory):
-        # Checking for filetype
-        try:
-            filename, separator, extension = file.partition('.')
-        except IsADirectoryError:
-            print(f'Failed to move {file}')
-        else:
-            print(extension)
-
-        if file in groups:
-            pass
-        else:
-            part = file.partition('.')
-            if part[2] == 'txt':
-                os.rename(directory+'/'+file, directory+'/Documents/'+file)
-                print(file)
-            if part[2] == 'mp3':
-                os.rename(directory+'/'+file, directory+'/Audio/'+file)
-                print(file)
-            if part[2] == 'jpg':
-                os.rename(directory+'/'+file, directory+'/Images/'+file)
-                print(file)
-            if part[2] == 'mp4':
-                os.rename(directory+'/'+file, directory+'/Videos/'+file)
-                print(file)
-            else:
-                print(file)
+class MyHandler(FileSystemEventHandler):
+    def on_modified(self, event):
+        for filename in os.listdir(folder_to_track):
+            i = 1
+            new_name = filename
+            extension = 'noname'
+            try:
+                extension = str(os.path.splitext(
+                    folder_to_track + '/' + filename)[1])
+                path = file_extensions.extensions[extension]
+            # else:
+                print(path)
+            except Exception:
+                extension = 'noname'
 
 
-categorize(folder_to_track)
+folder_to_track = '/Users/KOMFUEKU METH. PRY/Projects/demos/cat-test'
+
+handler = MyHandler()
+observer = Observer()
+
+observer.schedule(handler, folder_to_track, recursive=True)
+observer.start()
